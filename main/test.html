@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div id="result">0</div>
+    <div id="re">1</div>
+    <button onclick="st()">start</button>
+    <button onclick="en()">end</button>
+    <script>
+        function st(){
+            sTime=Date.now();
+        }
+        function en(){
+            eTime=(Date.now()-sTime)/1000;
+            document.getElementById("result").innerHTML=eTime;
+        }
+        let sTime;
+        let eTime;
+        let Time_key=[["a", 0], ["b", 0], ["c", 0], ["d", 0], ["e", 0], ["f", 0], ["g", 0],
+                      ["h", 0], ["i", 0], ["j", 0], ["k", 0], ["l", 0], ["m", 0], ["n", 0], 
+                      ["o", 0], ["p", 0], ["q", 0], ["r", 0], ["s", 0], ["t", 0], ["u", 0], 
+                      ["v", 0], ["w", 0], ["x", 21], ["y", 0], ["z", 0]];
+        let Time_place;
+        let Time_count;
+        const aryMax=function (a,b) {return Math.max(a, b);}
+        let max_num;
+        function Time(){//キーごとのタイピング経過時間の配列化
+            eTime=(Date.now()-sTime)/1000;//経過時間測定
+            Time_place=Time_key.map(x=>x[0]).indexOf("");
+            //map(x=>x[0])で要素が["a",0]から"a"のように1次元配列に変化し、indexOfでキーのインデックスを探す
+            if (Time_place!=-1){
+                if (Time_key[Time_place][1]!=0){
+                    Time_key[Time_place][1]=(Time_key[Time_place][1]+eTime)/2;//経過時間の平均
+                }else{
+                    Time_key[Time_place][1]=eTime;//経過時間の挿入
+                }
+            }
+        }
+        max_num=Time_key.map(x=>x[1]).reduce(aryMax);//経過時間が最も長いもののインデックス
+        document.getElementById("re").innerHTML=max_num;
+        document.getElementById("result").innerHTML=Time_key[Time_key.map(x=>x[1]).indexOf(max_num)][0];
+    
+
+    </script>
+</body>
+</html>

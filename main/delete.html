@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/form.css">
+    <title>Document</title>
+    <script>
+        function check(){//passwordの確認
+            if (localStorage.getItem(personal.name.value)!=null){
+                localStorage.removeItem(personal.name.value);
+                localStorage.removeItem(personal.name.value+"5843932");
+                localStorage.removeItem(personal.name.value+"88Time");
+                localStorage.removeItem(personal.name.value+"avTime");
+                return true;//localstorageに該当するパスワードがあるなら次の画面に行く
+            }else{
+                alert("no-reply");
+                return false;
+            }
+        }
+    </script>
+</head>
+<body>
+    <div class="header">アカウント削除</div>
+    <form action="index.html" method="get" name="personal"><!--passwordの入力-->
+        <label for="name">パスワード</label>
+        <input type="text" id="name" name="name">
+        <input type="submit" value="送信" onclick="return check()">
+    </form>
+</body>
+</html>

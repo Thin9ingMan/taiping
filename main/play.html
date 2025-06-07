@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="ja">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="css/style.css">
+        <title>特演</title>
+        <meta name="description" content="特演試作">
+    </head>
+    <body>
+        <div class="header">
+            <h1>苦手タイピング</h1>
+        </div>
+        <div id="wrong"></div>
+        <div class="center">
+            <h3 id="top"></h3>
+            <div id="add">
+                <h3 id="question">Enterを押してください</h3>  
+            </div>             
+        </div>
+
+        <p id="key_bord1"></p>
+        <p id="key_bord2"></p>
+        <p id="key_bord3"></p>
+        <p id="key_bord4"></p>
+        <a href="index.html">ホームに戻る</a>
+        <div id="timer">0</div>
+        <script>
+            const lis=["ok","ggo","a","saa","ha","aa","sa-bisu","pa-tei-","yokatta","saikin","pa-tei-ru-mu","ikenai","saizu","hai","aisatu","saihu","bai","aisukuri-mu",
+                       "zairyou","haikingu","aida","sauziarabia","haikensimasu","aite","sagasimasu","haisya","aimasu","sakana","hairimasu","ao","sagarimasu","hagaki","aoi",
+                       "sakini","hakarimasu","aka","sakimasu","hakimasu","akai","sakuhin","hako","akatyan","sakubun","hakobimasu","agarimasu","sakura","hasami","akarui","sake",
+                       "hasi","aki","sagemasu","hazimarimasu","akimasu","sasimasu","hazime","akiramemasu","sasimi","hazimete","akemasu","sasoimasu","hazimeni","agemasu","sakki",
+                       "hazimemasite","asa","zassi","hazimemasu","asagohan","satou","basyo","asatte","sadou","hasirimasu","asi","sabisii","basu","azi","sakkyoku","hazukasii",
+                       "asita","sama","hazusimasu","asoko","samui","basutei","asobimasu","sayounara","pasupo-to","atatakai","sara","hazuremasu","atama","saraigetu","pasokon",
+                       "atarasii","saraisyuu","hatarakimasu","atira","sarainen","hatuon","atui","saru","hatuka","atti","sawagimasu","hakkiri","atumarimasu","sawaziarapia","bakkin",
+                       "atumemasu","sawarimasu","hakkensimasu","ato","san","happyou","atode","sankasimasu","happyoukai","anata","zangyousimasu","hatumeisimasu","ani","sansei",
+                       "patoka-","anime","sandoitti","hana","ane","zannendesu","hanasi","ano","sanposimasu","hanasimasu","anou","zi","hanabi","anokata","siai","hanami","anohito",
+                       "siawase","haha","apa-to","si-dexi-","hayai","abimasu","sio","hayaku","abunai","sika","haraimasu","ahurika","sikasi","pari","amai","sikarimasu","harimasu",
+                       "amari","zikan","haru","amidana","siki","haremasu","ame","siken","han","amerika","ziko","ban","araimasu","zikokuhyou","pan","arigatougozaimasita","sigoto",
+                       "hankati","arigatou","zisyo","bangumi","arimasu","zisin","hanko","aru","sizuka","bangou","aruite","sizen","bankoku","arukimasu","sita","bangohan","arubaito",
+                       "sitagi","hansamu","arubamu","zikken","hantai","are","zituha","panda","are？","sippaisimasu","panti","ansyoubangou","situmon","hantosi","ansinsimasu","situmonsimasu",
+                       "banton","anzen","situreiitasimasu","panhuretto","anna","situreisimasu","hanbun","annaisimasu","situreidesuga","hi","annani","siteirassyaimasu","piano","i",
+                       "siten","bi-ru","ii","zitensya","higasi","iie","zidousya","hikidasi","kekkoudesu","zidouhanbaiki","hikimasu","madamadadesu","sinamono","hikui","iiewakarimasen",
+                       "sinimasu","hikouki","iitenkidesune","sibaraku","biza","iikotodesune","zibun","hisasiburidesune","iidesu","zibunde","bizyutu","iidesune","sima","bizyutukan",
+                       "iidesuyo","simaimasu","hizyouguti","iimasu","simasu","hidari","ie","simarimasu","bikkurisimasu","ika","zimusyo","hikkosi","ikagadesuka","simekiri","hituyou",
+                       "igaku","simemasu","bideo","ikimasu","zya","hito","ikutu","sya-pupensiru","hidoi","ikura","syain","hitokoto","igirisu","syakai","hitotu","ike","zyakaruta",
+                       "hitori","ikebana","siyakusyo","hitoride","iken","syasin","hima","isya","zyazu","himo","izyou","syatyou","hyaku","izyoudesu","syatu","hyakuzyuukyuuban","isu",
+                       "zyamata","hyakutooban","izu","zyama","hiyasimasu","isogasii","syawa-","byouin","isogimasu","syanhai","biyouin","itaidesu","syanpu-","byouki","itasimasu","zyuu",
+                       "hiragana","itadakimasu","syuukan","hirakimasu","itaria","zyuusyo","hiru","itido","zyuudou","biru","itidomo","ziyuuni","hirugohan","itiban","zyuubun","hiruma",
+                       "itibansita","syuumatu","hiruyasumi","itu","zyuuyokka","hiroi","ituka","syuurisimasu","hiroimasu","issyoukenmei","zyugyou","bin","issyoni","zyuku","fairu",
+                       "issyoniikagadesuka","syukudai","huutou","itutu","syusyou","pu-ru","ittekimasu","zyusyousimasu","huemasu","itudemo","syuzin","hukimasu","itterassyai",
+                       "syussekisimasu","huku","itumo","syuttyousimasu","hukuzatu","inaka","syuppatusimasu","hukusyuusimasu","inu","syumi","hukuro","ima","zyunbi","huta",
+                       "imaiidesuka","syoukaisimasu","hutatu","imasu","syougatu","hutari","imanimo","syougakkou","butyou","imanodensya","syoukin","hutuu","imi","siyoukinsi",
+                       "hutuka","imouto","omatikudasai","bukka","imoutosan","zyouzu","butukarimasu","iya","zyouzuni","hutoi","irassyai","syousetu","hutorimasu","irassyaimasu",
+                       "syousetuka","huton","irassyaimase","syoutaisimasu","hunabin","iriguti","siyoutyuu","hune","irimasu","zyoubu","huben","iremasu","zyouhou","humimasu",
+                       "iro","syouyu","huyu","iroiro","syourai","buraziru","osewaninarimasita","syo-to","huranken","insutantora-men","zyogingu","huransu","inta-netto",
+                       "syokuzisimasu","hurimasu","indo","syokudou","hurui","indonesia","zyokou","purezento","inhuruenza","syorui","huro","uun","sirasemasu","hurosiki",
+                       "u-n","sirabemasu","huronto","ue","siriaimasu","bunka","uemasu","sirimasu","bungaku","ukagaimasu","siryou","bunpou","uketuke","siro","heizitu","ukemasu",
+                       "siroi","heiwa","ugokimasu","zin","hee","usiro","singapo-ru","pekin","usui","sinkansen","heta","uso","singuru","beddo","uta","singou","petto","utaimasu",
+                       "zinkou","betubetuni","uti","singouwomigihemagattekudasai","heya","utyuu","sinzimasu","berakurusu","utukusii","zinzya","herimasu","uma","sinsetu","berurin",
+                       "umai","sinsetunisimasu","hen","umakuikimasu","sinnenkai","ben","umaremasu","sinpaisimasu","benkyou","umi","sinpai","benkyousimasu","ume","sinbun","bengosi",
+                       "ura","zu","henzi","uriba","suiei","bentou","urimasu","suisu","benri","urusai","suitti","bousi","uresii","suidou","housou","uremasu","suihanki","bounenkai",
+                       "uwagi","zuibun","houhou","un","suimasu","houritu","untensimasu","suiyoubi","bo-nasu","undoukai","su-tu","ho-musutei","undousimasu","su-pa-","bo-ru","e","suki-",
+                       "bo-rupen","eakon","suki","hokani","eame-ru","sukimasu","hokano","eiga","sugimasu","boku","eigyou","sukiyaki","bokuzyou","eigo","sugu","poketto","ee","sukunai",
+                       "hokensyou","e-thi-emu","sukezyu-ru","hosi","eki","sugoi","hosii","ekiin","sugoidesune","bosyuutyuu","ekimae","sukosi","hosyousyo","esa","sugosimasu","posuta-",
+                       "eda","susi","posuto","e","suzusii","hosoi","ehagaki","suta-to","botan","ehon","zutu","hottikisu","erai","zutto","hoteru","erabimasu","sutekidesune","hodo","enzin",
+                       "suteki","hotondo","enpitu","sutemasu","homemasu","enryonaku","sutoresu","boranteia","oikutu","subarasii","porutogaru","oisii","supi-ti","hon","oisogasiidesuka",
+                       "suberimasu","bon'odori","oinori","supein","honkon","oiwai","zubon","honsya","ouensimasu","sumi","hondana","ooi","sumimasu","hontou","ookii","sumimasen","hontoudesuka",
+                       "ookisa","sumou","hontouni","ookina","suwarimasu","honmono","o-sutoraria","se","honyakusimasu","oozei","sei","ma-ku","okaasan","seikatu","maiasa","okaerinasai",
+                       "seikatusimasu","maisyuu","okagesamade","seikousimasu","maituki","okasi","seizi","maitosi","okasii","seiseki","mainiti","ookuno","seito","maiban","oosakazyou","seihin",
+                       "mairimasu","oosakazyoukouen","seirisimasu","mae","okazu","se-ta-","magarimasu","okane","sekai","makemasu","okiba","sekaiisan","mago","okimasu","sekaizyuu","mazime",
+                       "okyakusama","seki","mazu","okyaku","sekiyu","mazui","oku","sekken","mazemasu","okusama","zettaini","mata","okusan","setubi","mada","okuzyou","setumeisimasu","matairassyattekudasai","okuni","setumeisyo","matakondoonegaisimasu","okurimasu","zehi","madamadadesu","okuremasu","semai","mati","ogenkidesuka","sewawosimasu","matigai","okosan","sen","matigaemasu","okonaimasu","sengetu","matimasu","osakini","sensyuu","massugu","osakinidouzo","sensei","maturi","osake","zenzen","made","osara","sensou","madeni","ozi","sentakusimasu","mado","oziisan/oziityan","sentakumono","matomemasu","osiire","sennuki","maniaimasu","osiemasu","senbu","mamorimasu","osigoto","zenbude","marason","ozisan","sou","maru","osimasu","zou","mawasimasu","syougatu","sousa","mawari","osirase","sousiki","man","siro","souzisimasu","manga","susi","sousimasyou","mansyon","osewaninarimasita","soudansimasu","mannaka","osoi","soudesuka","miai","sousiki","soudesune","mi-teingu","osoku","soko","miemasu","odaizini","sosite","migakimasu","otaku","sodatemasu","mikan","otimasu","sotira","migi","otya","sotugyousimasu","mikisa-","otyawan","sotti","mizigai","otyawotatemasu","soto","mizu","otukaresamadesita","sono","mise","ossyaimasu","sonogo","misetekudasai","otto","sonomamanisimasu","misemasu","oturi","sohu","mitainisitekudasai","otearai","sohuto","miti","odekakedesuka","sobo","mikka","tera","sora","mitukarimasu","oto","sore","mitukemasu","otousan","sorekara","mittu","otouto","sorede","midori","otoutosan","sorenara","minasama","otokonoko","soreni","minasan","otokonohito","sorehaomosiroidesune","minato","otosidama","soremadeni","minami","otosimasu","sorosorositureisimasu","mimai","tosiyori","soroban","mimasu","ototoi","zonzimasu","mimi","ototosi","sonna","miyage","odorimasu","sonnani","miruku","onaka","tai","minna","onakagaippaidesu","dai","minnade","onakagasukimasu","taiinsimasu","muika","onazi","daietto","mukaimasu","onamaeha?","taionkei","mukaemasu","oniisan","taikai","mukasi","oneesan","daigaku","mugi","onegaigaarundesuga","daigakuin","mukou","onegaisimasu","daizyoubu","muzukasii","oba","taisetu","musuko","obaasan/obaatyan","daitai","musukosan","obasan","taitei","musume","ohanami","daitouriyou","musumesan","ohayougozaimasu","daidokoro","mudana","ohikidasidesuka","dainingukittin","muttu","huro","taihuu","mura","bentou","taihendesune","muri","oboeteimasen","taiyou","murini","oboemasu","taoru","muryou","omagosan","taoremasu","muriwosimasu","omatasesimasita","takai","me","omatikudasai","takasa","meisi","maturi","takusan","me-ru","miai","takuhaibin","me-ruadoresu","mimai","dake","megane","miyage","tasika","mekisiko","omedetou","tasikamemasu","mesiagarimasu","omenikakarimasu","dasimasu","mezurasii","omoi","tadaima","memosimasu","omoidasimasu","tadasii","mou","omoimasu","tatiirikinsi","mouitido","omosa","tatimasu","mouippaiikagadesuka","omosiroi","tattaima","moukaeranaito…","omotya","tatemasu","mousikomimasu","omote","tatemono","mousimasu","oyasuminasai","tana","mousiwakearimasen","yu","tanosii","mousugu","oyogimasu","tanosimi","mousukosi","orimasu","tanosiminisiteimasu","moudesu","oremasu","tanosimimasu","moemasu","orosimasu","tanomimasu","moerugomi","owari","tabako","mokuteki","owarimasyou","tabun","mokuyoubi","owarimasu","tabemasu","mosi","ongaku","tabemono","mosimosi","ongakuka","tamago","motimasu","onsen","tamani","motiron","ondo","damedesuka","motteikimasu","onnanoko","dame","mottekimasu","onnanohito","tarimasu","motto","ka","dare","modosimasu","ga","dareka","motonotokoro","ka-ten","daredemo","modorimasu","ka-do","tanzyoubi","mono","kaigai","dansu","momizi","kaigan","dandan","moraimasu","kaigi","danbou","mondai","kaigisitu","tiisai","ya","gaikoku","tiisana","yakan","kaisya","tika","yakimasu","gaisya","tikai","yakyuu","kaisyain","tigaimasu","yakusoku","kaizyou","tikaku","yakunitatimasu","kaidan",
+                       "tikatetu","yakedo","kaityuudentou","tikara","yakemasu","gaido","tikyuu","yakoubasu","gaidobukku","tiketto","yasai","kaimasu","tizu","yasasii","kaimonosimasu","titi","yazirusi","kairan","tyairo","yasui","kaiwa","tyarenzisimasu","yasumi","kaesimasu","tyawan","yasumimasyou","kaettekimasu","tyan","yasumimasu","kaemasu","tyansu","yasemasu","kaeri","tyanto","yatin","kaerimasu","tyuu","yattu","kao","tyuuisimasu","yatto","kagaku","tyuugakkou","yaburemasu","kagami","tyuugoku","yama","kakariin","tyuusi","yamanobori","kakarimasu","tyuusyaihan","yamimasu","kagi","tyuusyazyou","yamemasu","kakimasu","tyousi","yarimasu","kagu","tyousetusimasu","yawarakai","gakusei","tyoudo","yu","kakunin","tyoudoii","yuugata","kakemasu","tyokinsimasu","yuusyousimasu","kasa","tyokusetu","yuubinkyoku","kazarimasu","tyotto","yuube","kasi","onegaigaarundesuga","yuumei","kazi","tyottomade","yu-moa","kasikomarimasita","tuitati","yuki","kasitekudasai","tuin","yusyutusimasu","kasimasu","tukaimasu","yukkuri","kasyu","tukatteirassyarundesune","yunyuusimasu","gasu","tukaremasita","yubiwa","gasusa-bisusenta-","tukaremasu","yume","gasurenzi","tuki","yoi","kaze","tukini","yoimasu","kazoemasu","tugini","youisimasu","kazoku","tugino","youka","gasorin","tukimasu","youzi","kata","tukue","yousyoku","katai","tukurimasu","yousu","katakana","tukemasu","youtien","katati","tugou","yokatta","katadukimasu","tutaemasu","yokattadesune","katadukemasu","tudukimasu","yokattara","katarogu","tudukemasu","yoku","katimasu","tutumimasu","yoko","katyou","tutomemasu","yogosimasu","gakkarisimasu","tunami","yogoremasu","gakkou","kanai","yosyuusimasu","katusikahokusai","tumaranai","yokka","katto","tumetai","yottu","kado","tuyoi","yotuya","kana","turi","yotei","kanai","tureteikimasu","yoteihyou","kanaimasu","turetekimasu","yobimasu","kanasii","te","yomikata","kanarazu","yomimasu","kanari","teisyoku","yoyakusimasu","kanozyo","de-ta","yoru","kaban","de-to","yorosikuotutaekudasai","kabin","te-buru","yorosiku","kabuki","dekakemasu","yowai","kaburimasu","tegami","raigetu","kabe","dekimasu","raisyuu","kamaimasen","dekirudake","rainen","kami","deguti","raku","kaminari","degozaimasu","razio","kamimasu","dezain","rassyu","gamu","desukara","rikonsimasu","kamera","tesuto","risaikurusimasu","kayoimasu","tetyou","ryuugakusimasu","kayoubi","tetudaimasu","ryuugakusei","kara","tenisu","ryukku","karai","deha","ryou","karaoke","tebukuro","riyousimasu","karakimasita","demasu","ryousyuusyo","garasu","demo","ryousin","karada","demonomimasenka","ryouri","karadaniii","tera","ryokan","karimasu","terebi","ryokou","karui","ten","ryokousya","kare","tenki","ringo","kare-","denki","rusu","karenda-","tenkiyohou","rei","kawa","tenkin","reizouko","gawa","tensai","reibou","kawaii","densizisyo","rekisi","kawakimasu","densya","resutoran","kawarimasu","denti","reba-","kan","tenpura","remon","kangaemasu","tenrankai","renkyuu","kangaru-","denwa","rensyuu","kankiri","denwasimasu","renrakusimasu","kanzi","to","rouka","kansyasimasu","doa","ro-n","kantan","toiimasu","rokuonsimasu","kandume","toiu","rosia","kanpai","doitu","robotto","ganbarimasu","toire","rondon","kanrinin","dou","ronbun","ki","douiu","waa","kiiro","douiuhuuninasaimasuka","wain","kiemasu","douitasimasite","wakai","kikai","dougu","wakasimasu","kigatukimasu","dousite","wakarimasita","kikimasu","dousimasitaka","wakarimasu","kiken","douzo","wakarimasuka","kikoemasu","douzooagarikudasai","wakaremasu","kizu","douzoogenkide","wasitu","kisetu","douzoosiawaseni","wasyoku","kisoku","yorosiku","wasuremasu","kita","toutyakusimasu","wasuremono","kitanai","doudesyouka","watakusi","kitinto","dounasaimasuka","watasi","kissaten","doubutu","watasitati","kittin","doubutuen","watasimasu","kitte","doumo","watarimasu","kitto","arigatougozaimasita","waraimasu","kippu","otukaresamadesita","waribiki",
+                       "kinou","douyatte","warui","kibisii","too","waremasu","kibungaii","tooi","kosyou","kibungawarui","tooka","gozen","kimasu","tooku","gozonzidesu","kimi","toorimasu","kotae","kimemasu","tokatoka","kotaemasu","kimoti","tokai","gotisousama","kimotigaii","tokidoki","gotyuumonha？","kimotigawarui","dokusin","kotira","kimono","tokuni","kotirakosodouzoyorosikuonegaisimasu","kyassyuka-do","tokubetu","kotirahasandesu","kyanserusimasu","tokei","kokkaigizidou","kyanpu","doko","kotti","kyuukyuusya","dokoka","koppu","kyuukeisimasu","dokodemo","koto","kyuukou","tokoro","kotosi","gyuudon","tokorode","kotoba","kyuuni","tosyokan","kodomo","gyuuniku","tosiyori","kodomotati","gyuunyuu","totyuude","kono","kyuuryou","dotira","konoaida","kyou","dotirasamadesyouka","konokurai","kyouiku","dotiramo","konogoro","kyoukai","tokkyuu","konohen","kyousi","dotti","gohan","kyousitu","totemo","kopi-simasu","kyoudai","todokimasu","komakai","kyoumi","todokemasu","komakaiokane","kyoka","donata","komarimasu","kyoku","donatademo","gomi","kyonen","tonari","gomibako","kirai","dono","komimasu","kirimasu","donokurai","kome","kirin","tomarimasu","goranninarimasu","kirei","tomemasu","goruhu","kiremasu","tomodati","kore","kiro","doyoubi","korekara","kiwotukemasu","doraiba-","korekaraosewaninarimasu","kin","torakku","koredeiidesuka","kin'iro","dorama","koredeonegaisimasu","kin'en","tori","koredeowarimasyou","kingaku","torikaemasu","koredeyorosiidesyouka","kinkakuzi","toriniku","korera","ginkou","torimasu","koro","ginkouin","dore","goro","kinzyo","toremasu","kowai","kintyousimasu","dorobou","kowasimasu","kinyoubi","donna","kowaremasu","guai","naihu","kon","kuuki","naosimasu","kongetu","kuukou","naorimasu","konsyuu","kusarimasu","naka","kontesuto","kusuri","nagai","kondo","kudasai","nagasa","konna","kudasaimasu","nakanaka","konnani","kudamono","nakimasu","konnitiha","kuti","nakusimasu","konban","kutu","nakunarimasu","konbini","kutusita","nagemasu","konya","kuni","nasaimasu","konyakusimasu","kumitatemasu","naze","ningyou","kumori","natu","nugimasu","kumorimasu","nanatu","nuremasu","kurai","nani","nekutai","gurai","nanika","neko","kurasikku","nanigo","nedan","kurasu","nanoka","netu","guramu","namae","nessin","kuri-ningu","nami","nemasu","kurisumasu","namida","nemui","kurikkusimasu","naraimasu","nemurimasu","guru-pu","narabimasu","nengazyou","kuruma","narabemasu","no-to","kuremasu","narimasu","nokorimasu","kuro","naremasu","nosibukuro","kuroi","nan","nosemasu","kuwasii","nankai","nodo","kun","nankaimo","nodogakawakimasu","gei","nangatu","notokoro","keikan","nansai","nohitotu","keiken","nanzi","nohou","keizai","nandesuka","noborimasu","keisatu","nandemo","nomihoudai","keisansimasu","nanniti","nomimasu","ke-ki","nannen","nomimono","ke-tai","nanban","norikaemasu","ge-mu","nanpura-","noriba","kega","nanpun","norimasu","kesa","nanyoubi","koi","kesiki","nioi","koibito","kesigomu","nigai","gou","kesimasu","nigiyaka","kouen","kekkonsiki","niku","gouka","kekkonsimasu","nigemasu","kougai","getuyoubi","nisan","goukakusimasu","kedo","nisanniti","kougi","ken","nisi","koukuubin","gen'in","nizikai","koukou","kengakusimasu","nizyuuyokka","kousaten","kenkasimasu","nitiyoubi","kouzyou","genkan","nituite","koutya","genki","nikki","koutuu","kenkyuusitu","nihongo","kouban","kenkyuusimasu","nimotu","koe","kenkyuusya","nyuuinsimasu","ko-su","genkin","nyuugakusiken","ko-to","kenkou","nyuugakusimasu","ko-na-","hokensyou","nyu-su","ko-hi-","kendou","nyuuryokusimasu","kokusai","genryou","niyoruto","koko","ko","niwa","gogo","go","ninki","kokonoka","kokoro","kokonotu","kokorokara","gosyuzin"];
+            let li=lis;
+            let q_count=0;//出題数  
+            let len;//リストの長さ      
+            let w_count=0;//文字列の何文字目か
+            let word_len;//文字列の長さ
+            let start=0;//出題するための変数
+            let wrong_li=[];//ミスタイプしたものを格納
+            let count_li=[];//何回ミスタイプしたか
+            let g=0;//キーボードの表示で用いる
+            let ren_1=["1","2","3","4","5","6","7","8","9","0","-"];
+            let ren_2=["q","w","e","r","t","y","u","i","o","p"];
+            let ren_3=["a","s","d","f","g","h","j","k","l"];
+            let ren_4=["shift","z","x","c","v","b","n","m",",",".","shift"];
+
+            function make_keybord(word){
+                document.getElementById("key_bord4").innerHTML='';//キーボードをリセットして、innerするたびに表示が増えることを防ぐ
+                document.getElementById("key_bord3").innerHTML='';
+                document.getElementById("key_bord2").innerHTML='';
+                document.getElementById("key_bord1").innerHTML='';
+                for(g=ren_4.length-1; g>=0; g--){//キーボード作成
+                    if (word==ren_4[g]){//次にタイプするものを色を変えて表示
+                        key_bord4.insertAdjacentHTML('afterbegin', '<span class="next">'+ren_4[g]+'</span>');
+                    }else{
+                        key_bord4.insertAdjacentHTML('afterbegin', '<span class="td">'+ren_4[g]+'</span>');
+                    }
+                }
+                for(g=ren_3.length-1; g>=0; g--){//キーボード作成
+                    if (word==ren_3[g]){
+                        key_bord3.insertAdjacentHTML('afterbegin', '<span class="next">'+ren_3[g]+'</span>');
+                    }else{
+                        key_bord3.insertAdjacentHTML('afterbegin', '<span class="td">'+ren_3[g]+'</span>');
+                    }
+                }
+                for(g=ren_2.length-1; g>=0; g--){//キーボード作成
+                    if (word==ren_2[g]){
+                        key_bord2.insertAdjacentHTML('afterbegin', '<span class="next">'+ren_2[g]+'</span>');
+                    }else{                       
+                        key_bord2.insertAdjacentHTML('afterbegin', '<span class="td">'+ren_2[g]+'</span>');
+                    }
+                }
+                for(g=ren_1.length-1; g>=0; g--){//キーボード作成
+                    if (word==ren_1[g]){
+                        key_bord1.insertAdjacentHTML('afterbegin', '<span class="next">'+ren_1[g]+'</span>');
+                    }else{
+                        key_bord1.insertAdjacentHTML('afterbegin', '<span class="td">'+ren_1[g]+'</span>');
+                    }
+                }
+            }
+            
+            // URLパラメータを取得
+            const urlParams = new URLSearchParams(window.location.search);
+            const name = urlParams.get('name');//ログイン
+
+            function store(){//間違えデータを保存
+                if(wrong_li!=[]){
+                    localStorage.setItem(name, JSON.stringify(wrong_li));//localstorageにwrong_liを保存
+                    localStorage.setItem(name+"5843932", JSON.stringify(count_li));//localstorageにcount_liを保存
+                }
+                document.getElementById("wrong").innerHTML=localStorage.getItem(name);
+            }
+            if(localStorage.getItem(name)!==null){
+                document.getElementById("wrong").innerHTML=localStorage.getItem(name);
+            }
+            window.addEventListener("keydown", taip);
+            function make_question(){//問題をランダム出題するためのリストシャッフル
+                len=lis.length;
+                let p;
+                let o;
+                let u;
+                let tem=[];
+
+                if (wrong_li!=0){//前回の間違え情報をもとに出題
+                    tem=[];
+                    for(p=0;p<wrong_li.length;p++){//出題リストを作成                
+                        for(o=0;o<len;o++){
+                            result=lis[o].indexOf(wrong_li[p]);
+                            if (result!=-1){    
+                                result=tem.indexOf(lis[o]);
+                                if(result==-1){
+                                    tem.push(lis[o]);
+                                }                  
+                            }
+                        }
+                        count_li[p]=count_li[p]-1;                        
+                    }
+                    li=tem;
+                    len=tem.length;
+                    let doko;
+                    while(count_li.indexOf(0)!=-1){//count_liに応じてwrong_liに残すものを決める
+                        doko=count_li.indexOf(0);
+                        if (doko!=-1){
+                            wrong_li.splice(doko,1);
+                            count_li.splice(doko,1);
+                        }
+                    }
+                }
+                while(len){//Fisher-Yates shuffle
+                    let number=Math.floor(Math.random()*len);
+                    let w=li[--len];
+                    li[len]=li[number];
+                    li[number]=w;
+                }
+            }
+            function taip(event){
+                let key_code=event.key;
+                if(start==0){//この関数が最初に呼び出されたとき
+                    if(localStorage.getItem(name)!==null && localStorage.getItem(name+"5843932") && !wrong_li.length){
+                        wrong_li=JSON.parse(localStorage.getItem(name));//localstorageの情報をもとに最初の出題を間違いリストに準拠して出題
+                        count_li=JSON.parse(localStorage.getItem(name+"5843932"));
+                    }
+                    make_question();
+                    word_len=li[q_count].length;
+                    if(li.length<10){
+                        document.getElementById("top").innerHTML=q_count+1+"/"+li.length;//出題数
+                    }else{
+                        document.getElementById("top").innerHTML=q_count+1+"/10";//出題数
+                    }
+                    document.getElementById("question").innerHTML=li[q_count];//１問目表示
+                    make_keybord(li[q_count].charAt(w_count));
+                    start++;//このif文がループしないように
+                }else{
+                    if(li[q_count].charAt(w_count)==key_code){//正しくタイプされたとき
+                        document.getElementById('question').innerHTML='<span class="red">'+li[q_count].substring(0,w_count+1)+'</span>'+li[q_count].substring(w_count+1);
+                        //入力したところまで文字の色を変化させる
+                        w_count++;
+                        make_keybord(li[q_count].charAt(w_count));
+                        if(word_len===w_count){//文字列の最後までタイプした場合
+                            w_count=0;
+                            q_count++;
+                            if(q_count!=10 && q_count!=li.length){
+                                word_len=li[q_count].length;
+                                document.getElementById("question").innerHTML=li[q_count];//次の問題へ
+                                make_keybord(li[q_count].charAt(w_count));
+                                if(li.length<10){
+                                    document.getElementById("top").innerHTML=q_count+1+"/"+li.length;//出題数
+                                }else{
+                                    document.getElementById("top").innerHTML=q_count+1+"/10";//出題数
+                                }
+                            }else{//問題が出題し終わった場合
+                                document.getElementById("top").innerHTML="終了";
+                                q_count=0;           
+                                w_count=0;
+                                word_len;
+                                store();
+                                if(wrong_li==0){//間違いがなかった場合
+                                    document.getElementById("question").innerHTML="Perfect";
+                                    document.getElementById("wrong").innerHTML="";
+                                    question.insertAdjacentHTML('beforeend', '<input type="button" id="btn" value="もう一度プレイ" onclick="window.location.reload();" />');
+                                    
+                                }else{
+                                    document.getElementById("question").innerHTML="あなたの苦手は"+wrong_li.join('と');
+                                    start=0;
+                                }
+                            }
+                        }
+                    }else{
+                        result=wrong_li.indexOf(li[q_count].charAt(w_count));//リスト内に対象の文字があるか調べる
+                        if (result==-1){//対象の文字がない場合
+                            wrong_li.push(li[q_count].charAt(w_count));//リストに追加
+                            count_li.push(1);//リストに追加
+                        }else{
+                            count_li[result]=count_li[result]+1;//ミスタイプ数を増やす
+                        }
+                    }
+
+                }
+
+            }
+        </script>
+    </body>
+</html>

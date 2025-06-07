@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/form.css">
+    <title>ログインページ</title>
+    <script>
+        function check(){//passwordの確認
+            if (localStorage.getItem(personal.name.value)!=null){
+                return true;//localstorageに該当するパスワードがあるなら次の画面に行く
+            }else{
+                alert("no-exist");
+                return false;
+            }
+        }
+    </script>
+</head>
+<body>
+<div class="header">はやくタイプ</div>
+<form action="play_hard.html" method="get" name="personal"><!--passwordの入力-->
+    <label for="name">パスワード</label>
+    <input type="text" id="name" name="name">
+    <input type="submit" value="送信" onclick="return check()">
+</form>
+
+</body>
+</html>

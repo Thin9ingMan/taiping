@@ -1,0 +1,40 @@
+@charset "UTF-8";
+
+body{
+    font-family: 'Hiragino Kaku Gothic Pro',"Meiryo",sans-serif;
+    font-size: 30px;
+    background-image: url('../imag/green_leaf01.png');
+    background-size: cover; /* 画像をコンテナ全体にフィットさせる */
+    background-position: center; /* 画像を中央に配置する */
+    background-repeat: no-repeat; /* 画像の繰り返しを防ぐ */
+    /*height: 433px;*/
+    height: 700px;
+    width: 1150px;
+    text-align: center;
+    /*margin-top: 267px;*/
+}
+.header{
+    font-size: 60px;
+    margin-top: 100px;
+    color: #1A4731;
+    -webkit-text-stroke: 1px #FAF4E0;
+}
+input[type=text] {
+    margin-top: 137px;
+    padding: 20px;
+    border: 2px solid #1A4731;
+    border-radius: 3%;
+    font-size: 20px;
+} 
+input[type=submit] {
+    padding: 20px;
+    border: 1px solid rgb(0, 0, 0);
+    border-radius: 3%;
+    font-size: 17px;
+    color: white;
+    background: #1A4731;
+    transition: .2s;
+} 
+input[type=submit]:hover{
+    background-color: #d3af39;
+}

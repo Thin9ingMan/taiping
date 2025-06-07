@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="css/grow.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+</head>
+<body>  
+<!--Canvas要素をHTMLに記述-->
+<canvas id="myLineChart" width="400" height="400"></canvas>
+<h4>x軸:回数、y軸:秒数</h4>
+<!--線グラフのJavaScriptコード-->
+<a href="index.html">ホームに戻る</a>
+<script>
+    // URLパラメータを取得
+    const urlParams = new URLSearchParams(window.location.search);
+    const name = urlParams.get('name');//ログイン
+    //できてない。仮でtestのデータを参照している
+    let i;
+    let av_data=JSON.parse(localStorage.getItem(name+"avTime"));//平均のデータ
+    let x_li=[];//x軸の値
+    for (i=0;i<av_data.length;i++){
+        x_li[i]=i+1;
+    }
+
+    var ctxLine = document.getElementById('myLineChart').getContext('2d'); // Canvasのコンテキストを取得
+    var myLineChart = new Chart(ctxLine, {
+        type: 'line', // グラフの種類を指定
+        data: {
+            labels: x_li, // X軸に表示するラベル
+            datasets: [{
+                label: 'Your Growth History', // 凡例として表示されるテキスト
+                data: av_data, // Y軸に表示されるデータ
+                backgroundColor: 'rgba(54, 162, 235, 0.2)', // データの背景色
+                borderColor: 'rgba(54, 162, 235, 1)', // データの枠線色
+                borderWidth: 4 // 枠線の太さ
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true // Y軸を0から開始
+                }
+            }
+        }
+    });
+    myLineChart.canvas.parentNode.style.height = '500px';
+    myLineChart.canvas.parentNode.style.width = '1000px';
+</script>
+</body>
+</html>
